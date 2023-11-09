@@ -7,41 +7,47 @@ import ru.shisterov.lession2_javafx.creators.ICreator
 
 open class FLine (): IFigure {
     companion object{
-        const val title = "Линия"
-        const val startX:Double = 0.0
-        const val startY:Double = 0.0
-        const val endX:Double = 0.0
-        const val endY:Double = 0.0
+        const val TITLE = "Линия"
+        private const val START_X = 0.0
+        private const val START_Y = 0.0
+        private const val END_X = 0.0
+        private const val END_Y = 0.0
     }
 
 
-    private val figure = Line(startX, startY, endX, endY)
+    private val figure = Line(START_X, START_Y, END_X, END_Y)
 
     override val shape: Shape
         get() = figure
 
     override fun init(x: Double, y: Double, color: Color, width: Double) {
-        figure.startX = x
-        figure.startY = y
-        figure.endX = x
-        figure.endY = y
-        figure.stroke = color
-        figure.strokeWidth = width
+        with(figure) {
+            startX = x
+            startY = y
+            endX = x
+            endY = y
+            stroke = color
+            strokeWidth = width
+        }
     }
 
     override fun firstPoint(x: Double, y: Double) {
-        figure.startX = x
-        figure.startY = y
+        with(figure) {
+            startX = x
+            startY = y
+        }
     }
 
     override fun secondPoint(x: Double, y: Double) {
-        figure.endX = x
-        figure.endY = y
+        with(figure) {
+            endX = x
+            endY = y
+        }
     }
 
 
     override val name: String
-        get() = title
+        get() = TITLE
 
 
 }

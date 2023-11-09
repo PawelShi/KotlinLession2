@@ -8,14 +8,13 @@ import javafx.stage.Stage
 class PaintApplication : Application() {
     override fun start(stage: Stage) {
         val fxmlLoader = FXMLLoader(PaintApplication::class.java.getResource("paint-view.fxml"))
-        val scene = Scene(fxmlLoader.load(), screenWidth, screenHeight)
-        stage.title = "Hello!"
-        stage.scene = scene
-        stage.show()
+        val scene = Scene(fxmlLoader.load(), ConfigApp.SCREEN_WIDTH, ConfigApp.SCREEN_HEIGHT)
+        with(stage) {
+            title = "Hello!"
+            stage.scene = scene
+            show()
+        }
     }
-    companion object{
-        const val screenWidth = 600.0
-        const val screenHeight = 480.0
-    }
+
 }
 

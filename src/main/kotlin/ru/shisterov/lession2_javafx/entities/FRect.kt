@@ -9,26 +9,28 @@ import ru.shisterov.lession2_javafx.creators.ICreator
 open class FRect: IFigure {
 
     companion object{
-        const val title = "Прямоугольник"
-        const val startX:Double = 0.0
-        const val startY:Double = 0.0
-        const val startW:Double = 0.0
-        const val startH:Double = 0.0
+        const val TITLE = "Прямоугольник"
+        private const val START_X = 0.0
+        private const val START_Y = 0.0
+        private const val START_W = 0.0
+        private const val START_H = 0.0
     }
 
-    private val figure = Rectangle(startX, startY, startW, startH)
+    private val figure = Rectangle(START_X, START_Y, START_W, START_H)
 
     override val shape: Shape
         get() = figure
 
     override fun init(x: Double, y: Double, color: Color, width: Double) {
-        figure.x = x
-        figure.y = y
-        figure.width = 0.0
-        figure.height = 0.0
-        figure.stroke = color
-        figure.strokeWidth = width
-        figure.fill = null
+        with(figure) {
+            this.x = x
+            this.y = y
+            this.width = 0.0
+            height = 0.0
+            stroke = color
+            strokeWidth = width
+            fill = null
+        }
     }
 
     override fun firstPoint(x: Double, y: Double) {
@@ -37,14 +39,16 @@ open class FRect: IFigure {
     }
 
     override fun secondPoint(x: Double, y: Double) {
-        val width = x - figure.x
-        val height = y - figure.y
-        figure.width = width
-        figure.height = height
+        val w = x - figure.x
+        val h = y - figure.y
+        with(figure) {
+            width = w
+            height = h
+        }
     }
 
     override val name: String
-        get() = title
+        get() = TITLE
 
 }
 

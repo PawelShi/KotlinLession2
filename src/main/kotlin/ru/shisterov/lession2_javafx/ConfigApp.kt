@@ -20,14 +20,11 @@ data class PaintButtonInfo (
 )
 
 object ConfigApp {
-
-
-
     //МАссив кнопок
     private val  buttonTypes = listOf<PaintButtonInfo>(
-            PaintButtonInfo(FLine.title, PaintButtonType.LINE),
-            PaintButtonInfo(FCircle.title, PaintButtonType.CIRCLE),
-            PaintButtonInfo(FRect.title, PaintButtonType.RECTANGLE),
+            PaintButtonInfo(FLine.TITLE, PaintButtonType.LINE),
+            PaintButtonInfo(FCircle.TITLE, PaintButtonType.CIRCLE),
+            PaintButtonInfo(FRect.TITLE, PaintButtonType.RECTANGLE),
         )
     //массив создателей фигур - ТИп кнопки связан с объектом - создателем
     private val  figureCreators  = mapOf<PaintButtonType, ICreator>(
@@ -36,23 +33,23 @@ object ConfigApp {
             PaintButtonType.RECTANGLE   to RectCreator(),
         )
 
+    //Константы
+    const val SCREEN_WIDTH = 600.0
+    const val SCREEN_HEIGHT = 480.0
+    val DEFAULT_COLOR = Color.BLACK
+    const val DEFAULT_WEIGHT = 2.0
 
-//Метод для создания фигуры
+    //Метод для создания фигуры
     fun figureCreate(type:PaintButtonType,
                      x:Double = 0.0,
                      y:Double = 0.0,
-                     color:Color = Color.BLACK,
-                     width:Double = 2.0
+                     color:Color = DEFAULT_COLOR,
+                     width:Double = DEFAULT_WEIGHT,
     ):IFigure {
     //Находим создателя фигуры по типу кнопки
         val creator = figureCreators[type]
-
 //    вызываем метод create у создателя
-        return if (creator != null){
-            creator.create()
-        } else {
-            LineCreator().create()
-        }.apply { init(x, y, color, width) }
+        return (creator?.create() ?: LineCreator().create()).apply { init(x, y, color, width) }
     }
 
     //метод возвращает список доступных кнопок

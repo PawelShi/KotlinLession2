@@ -11,6 +11,7 @@ import ru.shisterov.lession2_javafx.entities.IFigure
 
 class PaintViewController {
 
+
     @FXML
     private lateinit var colorPicker: ColorPicker
 
@@ -24,45 +25,52 @@ class PaintViewController {
     private lateinit var shapes: HBox
 
     private fun getColor() = colorPicker.value
-    private fun getWidhtLine() = brushSize.text.toDouble()
+    private fun getWeightLine():Double {
+        return try {
+            brushSize.text.toDouble()
+        } catch (e:Exception){
+            println("Ошибка!! ${e.message}")
+            ConfigApp.DEFAULT_WEIGHT
+        }
+
+    }
 
     //-------------
-    var figure: IFigure = ConfigApp.figureCreate(PaintButtonType.LINE)
+    private var figure: IFigure = ConfigApp.figureCreate(PaintButtonType.LINE)
 
-    var isDrawing = false
+    private var isDrawing = false
 
-    var currentType: PaintButtonType = PaintButtonType.LINE
+    private var currentType: PaintButtonType = PaintButtonType.LINE
 
     //-------------
 
 
+    //Нужная для javaFX функция
     fun initialize() {
         //Настраиваем кнопки
-
         //Берем список кнопок, создаем элементы, назначаем обработчик
         val buttons = ConfigApp.getButtons()
         buttons.forEach {
 
-            val btn = createButton(it.name).apply {
+            val btn = Button(it.name).apply {
                 setOnAction { a-> onButtonClick(it.type) }
             }
             shapes.children.add(btn)
         }
 
-
         //Настраиваем обработку мыши
-        canvas.setOnMouseMoved { onMouseMoved(it) }
-        canvas.setOnMouseClicked { onMouseClick(it) }
+        with(canvas) {
+            setOnMouseMoved { onMouseMoved(it) }
+            setOnMouseClicked { onMouseClick(it) }
+        }
 
     }
-    fun createButton(name:String): Button = Button(name)
+//    fun createButton(name:String): Button = Button(name)
 
-    fun onButtonClick(btnType:PaintButtonType){
+    private fun onButtonClick(btnType:PaintButtonType){
         //при нажатии на кнопку элемента запоминаем текущий тип
         currentType = btnType
-
     }
-
 
     private fun onMouseMoved(e: MouseEvent) {
         //Перерисовываем фигуру, если в режиме рисования
@@ -70,36 +78,31 @@ class PaintViewController {
             changeDrawing(e.x, e.y)
     }
 
-
     private fun changeDrawing(x: Double, y: Double) {
         if (isDrawing)
             figure.secondPoint(x, y)
-
     }
 
     //нажатие клавиши - смотрим статус
     private fun onMouseClick(e: MouseEvent) {
         if (isDrawing)
-            finishDrawing(e.x, e.y)
+            finishDrawing()
         else
             startDrawing(e.x, e.y)
     }
 
-
-    private fun finishDrawing(x: Double, y: Double) {
+    private fun finishDrawing() {
         println("!!! КОнец рисования фигуры ${figure.name}")
         //завершаем рисование объекта
         isDrawing = false
-
     }
 
     private fun startDrawing(x: Double, y: Double) {
         println("Начало рисования фигуры ${figure.name}")
         //если не в режиме рисования, переводим в режим рисования и создаем Shape-объект
         isDrawing = true
-        figure = ConfigApp.figureCreate(currentType,x, y, getColor(), getWidhtLine())
+        figure = ConfigApp.figureCreate(currentType,x, y, getColor(), getWeightLine())
         canvas.children.add(figure.shape)
-
     }
 
 }
