@@ -3,14 +3,9 @@ package ru.shisterov.lession2_javafx.entities
 import javafx.scene.paint.Color
 import javafx.scene.shape.Line
 import javafx.scene.shape.Shape
+import ru.shisterov.lession2_javafx.creators.ICreator
 
 open class FLine (): IFigure {
-
-    private var startX:Double = 0.0
-    private var startY:Double = 0.0
-    private var endX:Double = 0.0
-    private var endY:Double = 0.0
-
 
     private val line = Line(startX, startY, endX, endY)
 
@@ -36,6 +31,19 @@ open class FLine (): IFigure {
         line.endY = y
     }
 
+
     override val name: String
-        get() = "Линия"
+        get() = title
+
+    companion object{
+        const val title = "Линия"
+        const val startX:Double = 0.0
+        const val startY:Double = 0.0
+        const val endX:Double = 0.0
+        const val endY:Double = 0.0
+    }
+}
+
+class LineCreator: ICreator {
+    override fun create(): IFigure = FLine()
 }

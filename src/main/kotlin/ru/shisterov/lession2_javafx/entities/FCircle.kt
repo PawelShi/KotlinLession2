@@ -3,6 +3,7 @@ package ru.shisterov.lession2_javafx.entities
 import javafx.scene.paint.Color
 import javafx.scene.shape.Ellipse
 import javafx.scene.shape.Shape
+import ru.shisterov.lession2_javafx.creators.ICreator
 
 class FCircle : IFigure {
 
@@ -48,5 +49,14 @@ class FCircle : IFigure {
     }
 
     override val name: String
-        get() = "Эллипс"
+        get() = title
+
+    companion object{
+        const val title = "Эллипс"
+    }
+}
+
+
+class CircleCreator: ICreator {
+    override fun create(): IFigure = FCircle()
 }

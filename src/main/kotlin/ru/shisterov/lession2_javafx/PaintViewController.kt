@@ -27,7 +27,7 @@ class PaintViewController {
     private fun getWidhtLine() = brushSize.text.toDouble()
 
     //-------------
-    var figure: IFigure = ConfigApp.figure
+    var figure: IFigure = ConfigApp.figureCreate(PaintButtonType.LINE)
 
     var isDrawing = false
 
@@ -97,7 +97,7 @@ class PaintViewController {
         println("Начало рисования !!!!")
         //если не в режиме рисования, переводим в режим рисования и создаем Shape-объект
         isDrawing = true
-        figure = ConfigApp.figureCreator(currentType,x, y, getColor(), getWidhtLine())
+        figure = ConfigApp.figureCreate(currentType,x, y, getColor(), getWidhtLine())
         canvas.children.add(figure.shape)
 
     }
