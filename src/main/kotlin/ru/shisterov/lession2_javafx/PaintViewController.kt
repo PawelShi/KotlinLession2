@@ -1,6 +1,7 @@
 package ru.shisterov.lession2_javafx
 
 import javafx.fxml.FXML
+import javafx.scene.control.Button
 import javafx.scene.control.ColorPicker
 import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
@@ -29,6 +30,9 @@ class PaintViewController {
     var figure: IFigure = ConfigApp.figure
 
     var isDrawing = false
+
+    var currentType: PaintButtonType = PaintButtonType.LINE
+
     //-------------
 
 
@@ -39,13 +43,23 @@ class PaintViewController {
         val buttons = ConfigApp.getButtons()
         buttons.forEach {
 
-            shapes.children.add(it)
+            val btn = createButton(it.name).apply {
+                setOnAction { a-> onButtonClick(it.type) }
+            }
+            shapes.children.add(btn)
         }
 
 
         //Настраиваем обработку мыши
         canvas.setOnMouseMoved { onMouseMoved(it) }
         canvas.setOnMouseClicked { onMouseClick(it) }
+
+    }
+    fun createButton(name:String): Button = Button(name)
+
+    fun onButtonClick(btnType:PaintButtonType){
+        //при нажатии на кнопку элемента запоминаем текущий тип
+        currentType = btnType
 
     }
 
@@ -82,8 +96,8 @@ class PaintViewController {
     private fun startDrawing(x: Double, y: Double) {
         println("Начало рисования !!!!")
         //если не в режиме рисования, переводим в режим рисования и создаем Shape-объект
-        isDrawing = true;
-        figure = ConfigApp.figureCreator(x, y, getColor(), getWidhtLine())
+        isDrawing = true
+        figure = ConfigApp.figureCreator(currentType,x, y, getColor(), getWidhtLine())
         canvas.children.add(figure.shape)
 
     }
