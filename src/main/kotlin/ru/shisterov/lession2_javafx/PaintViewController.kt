@@ -87,14 +87,14 @@ class PaintViewController {
 
 
     private fun finishDrawing(x: Double, y: Double) {
-        println("!!! КОнец рисования !!!!")
+        println("!!! КОнец рисования фигуры ${figure.name}")
         //завершаем рисование объекта
         isDrawing = false
 
     }
 
     private fun startDrawing(x: Double, y: Double) {
-        println("Начало рисования !!!!")
+        println("Начало рисования фигуры ${figure.name}")
         //если не в режиме рисования, переводим в режим рисования и создаем Shape-объект
         isDrawing = true
         figure = ConfigApp.figureCreate(currentType,x, y, getColor(), getWidhtLine())
