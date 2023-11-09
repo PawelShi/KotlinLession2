@@ -7,28 +7,29 @@ import ru.shisterov.lession2_javafx.creators.ICreator
 
 open class FLine (): IFigure {
 
-    private val line = Line(startX, startY, endX, endY)
+
+    private val figure = Line(startX, startY, endX, endY)
 
     override val shape: Shape
-        get() = line
+        get() = figure
 
     override fun init(x: Double, y: Double, color: Color, width: Double) {
-        line.startX = x
-        line.startY = y
-        line.endX = x
-        line.endY = y
-        line.stroke = color
-        line.strokeWidth = width
+        figure.startX = x
+        figure.startY = y
+        figure.endX = x
+        figure.endY = y
+        figure.stroke = color
+        figure.strokeWidth = width
     }
 
     override fun firstPoint(x: Double, y: Double) {
-        line.startX = x
-        line.startY = y
+        figure.startX = x
+        figure.startY = y
     }
 
     override fun secondPoint(x: Double, y: Double) {
-        line.endX = x
-        line.endY = y
+        figure.endX = x
+        figure.endY = y
     }
 
 

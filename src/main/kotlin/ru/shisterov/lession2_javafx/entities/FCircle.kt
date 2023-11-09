@@ -7,44 +7,34 @@ import ru.shisterov.lession2_javafx.creators.ICreator
 
 class FCircle : IFigure {
 
-    private var startX:Double = 0.0
-    private var startY:Double = 0.0
-    private var radX:Double = 0.0
-    private var radY:Double = 0.0
+    // TODO: Т.к. figure повторяется во всех классах, нужно наследовать, а не интерфейс
 
-
-    private val circle = Ellipse(startX, startY, radX, radY)
+    private val figure = Ellipse(startX, startY, startRadX, startRadY)
 
     override val shape: Shape
-        get() = circle
+        get() = figure
 
     override fun init(x: Double, y: Double, color: Color, width: Double) {
         println(" ИНИЦИАЛИЗАЦИ круга $x $y")
-
-        startX = x
-        startY = y
-        circle.centerX = startX
-        circle.centerY = startY
-        circle.radiusX = radX
-        circle.radiusY = radY
-        circle.stroke = color
-        circle.strokeWidth = width
-        circle.fill = null
+        figure.centerX = x
+        figure.centerY = y
+        figure.radiusX = startRadX
+        figure.radiusY = startRadY
+        figure.stroke = color
+        figure.strokeWidth = width
+        figure.fill = null
     }
 
     override fun firstPoint(x: Double, y: Double) {
-        startX = x
-        startY = y
-        circle.centerX = startX
-        circle.centerY = startY
+
+        figure.centerX = x
+        figure.centerY = y
     }
 
     override fun secondPoint(x: Double, y: Double) {
 
-        radX = x - startX
-        radY = y - startY
-        circle.radiusX = radX
-        circle.radiusY = radY
+        figure.radiusX = x - figure.centerX
+        figure.radiusY = y - figure.centerY
 
     }
 
@@ -53,6 +43,10 @@ class FCircle : IFigure {
 
     companion object{
         const val title = "Эллипс"
+        const val startX:Double = 0.0
+        const val startY:Double = 0.0
+        const val startRadX:Double = 0.0
+        const val startRadY:Double = 0.0
     }
 }
 
