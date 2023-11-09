@@ -7,6 +7,13 @@ import ru.shisterov.lession2_javafx.creators.ICreator
 
 class FCircle : IFigure {
 
+    companion object{
+        const val title = "Эллипс"
+        const val startX:Double = 0.0
+        const val startY:Double = 0.0
+        const val startRadX:Double = 0.0
+        const val startRadY:Double = 0.0
+    }
     // TODO: Т.к. figure повторяется во всех классах, нужно наследовать, а не интерфейс
 
     private val figure = Ellipse(startX, startY, startRadX, startRadY)
@@ -41,13 +48,7 @@ class FCircle : IFigure {
     override val name: String
         get() = title
 
-    companion object{
-        const val title = "Эллипс"
-        const val startX:Double = 0.0
-        const val startY:Double = 0.0
-        const val startRadX:Double = 0.0
-        const val startRadY:Double = 0.0
-    }
+
 }
 
 

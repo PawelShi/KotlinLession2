@@ -6,6 +6,13 @@ import javafx.scene.shape.Shape
 import ru.shisterov.lession2_javafx.creators.ICreator
 
 open class FLine (): IFigure {
+    companion object{
+        const val title = "Линия"
+        const val startX:Double = 0.0
+        const val startY:Double = 0.0
+        const val endX:Double = 0.0
+        const val endY:Double = 0.0
+    }
 
 
     private val figure = Line(startX, startY, endX, endY)
@@ -36,13 +43,7 @@ open class FLine (): IFigure {
     override val name: String
         get() = title
 
-    companion object{
-        const val title = "Линия"
-        const val startX:Double = 0.0
-        const val startY:Double = 0.0
-        const val endX:Double = 0.0
-        const val endY:Double = 0.0
-    }
+
 }
 
 class LineCreator: ICreator {
