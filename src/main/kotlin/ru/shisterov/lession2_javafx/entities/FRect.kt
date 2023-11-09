@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle
 import javafx.scene.shape.Shape
 import ru.shisterov.lession2_javafx.creators.ICreator
 
-open class FRect (): IFigure {
+open class FRect: IFigure {
 
     companion object{
         const val title = "Прямоугольник"
