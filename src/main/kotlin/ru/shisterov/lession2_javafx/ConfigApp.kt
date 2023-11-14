@@ -1,7 +1,14 @@
 package ru.shisterov.lession2_javafx
 
+import javafx.scene.Parent
+import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import ru.shisterov.lession2_javafx.creators.ICreator
+import ru.shisterov.lession2_javafx.data.IStorageProvider
+import ru.shisterov.lession2_javafx.data.StorageProviderDefault
+import ru.shisterov.lession2_javafx.drawing.Artist
+import ru.shisterov.lession2_javafx.drawing.CalcType
+import ru.shisterov.lession2_javafx.drawing.CalculatorFactory
 import ru.shisterov.lession2_javafx.entities.*
 
 //Здесь будем брать параметры объектов
@@ -54,6 +61,29 @@ object ConfigApp {
 
     //метод возвращает список доступных кнопок
     fun getButtons(): List<PaintButtonInfo> = buttonTypes
+
+
+    ///=========================================
+
+    //Хранилище
+    private val storage: IStorageProvider = StorageProviderDefault()
+    fun getStorageProvider(): IStorageProvider = storage
+
+    private val calcFactory = CalculatorFactory()
+    fun getCalculatorFactory(): CalculatorFactory  = calcFactory
+
+    private val artist = Artist()
+    fun makeArtist(): Artist = artist
+
+    fun makeManager(canvas: Pane, calcType:CalcType): ManagerDrawing {
+
+        return ManagerDrawing(
+            canvas = canvas,
+            calculator = calcFactory.create(calcType),
+            artist = artist,
+            storage = storage
+        )
+    }
 
 }
 
