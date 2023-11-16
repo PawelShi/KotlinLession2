@@ -1,7 +1,7 @@
 package ru.shisterov.lession2_javafx.drawing
 
 import javafx.scene.shape.Ellipse
-import javafx.scene.shape.Line
+import javafx.scene.shape.Polygon
 import javafx.scene.shape.Polyline
 import javafx.scene.shape.Shape
 import ru.shisterov.lession2_javafx.model.FigEllipse
@@ -13,35 +13,36 @@ import ru.shisterov.lession2_javafx.model.FigureType
 //По объекту Figure создает объект Shape для вывода на холст
 //Умеет рисовать 2 фигуры - эллипс и мультилинию
 class Artist {
-    fun draw(figure:Figure):Shape{
+    fun draw(figure: Figure): Shape {
         println("Рисуем $figure")
-        return when(figure.type){
+        return when (figure.type) {
             FigureType.ELLIPSE -> createEllipse(figure as FigEllipse)
             FigureType.MULTILINE -> createMultyLine(figure as FigLine)
 
         }
     }
 
-    private fun createMultyLine(figLine: FigLine):Shape {
-        return Polyline().apply {
-            points.addAll(figLine.points.flatMap { it.values })
-
+    private fun createMultyLine(figLine: FigLine): Shape {
+        val coords = figLine.points.flatMap { it.values }
+        return when (figLine.isClosed) {
+            true -> Polygon().apply { points.addAll(coords) }
+            else -> Polyline().apply { points.addAll(coords) }
         }
     }
 
+
     override fun toString(): String = "Универсальный"
 
-    private fun createEllipse(ellipse: FigEllipse):Shape =
+    private fun createEllipse(ellipse: FigEllipse): Shape =
         with(ellipse) {
             Ellipse(center.x, center.y, radX, radY)
         }
 
-    fun default(): Shape = Line()
     fun refresh(shape: Shape, figure: Figure) {
 //        println(" -- refresh shape: $figure")
-        when(figure.type){
+        when (figure.type) {
             FigureType.ELLIPSE -> refreshEllipse(shape as Ellipse, figure as FigEllipse)
-            FigureType.MULTILINE -> refreshMultiLine(shape as Polyline, figure as FigLine)
+            FigureType.MULTILINE -> refreshMultiLine(shape , figure as FigLine)
 
         }
     }
@@ -57,8 +58,12 @@ class Artist {
         }
     }
 
-    private fun refreshMultiLine(polyline: Polyline, figLine: FigLine) {
-        polyline.points.setAll(figLine.points.flatMap { it.values })
+    private fun refreshMultiLine(shape: Shape, figLine: FigLine) {
+        val coords = figLine.points.flatMap { it.values }
+        when (shape) {
+            is Polyline -> shape.points.setAll(coords)
+            is Polygon  -> shape.points.setAll(coords)
+        }
     }
 
 

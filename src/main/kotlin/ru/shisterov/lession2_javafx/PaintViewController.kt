@@ -1,5 +1,7 @@
 package ru.shisterov.lession2_javafx
 
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ColorPicker
@@ -8,8 +10,18 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import ru.shisterov.lession2_javafx.drawing.CalcType
-import ru.shisterov.lession2_javafx.entities.IFigure
+import ru.shisterov.lession2_javafx.drawing.Drawer
+import ru.shisterov.lession2_javafx.manager.IModeManager
+import ru.shisterov.lession2_javafx.model.FigEllipse
+import ru.shisterov.lession2_javafx.model.FigLine
 import ru.shisterov.lession2_javafx.model.FigureType
+import java.io.File
+
+
+enum class PaintMode(val message: String) {
+    MOVE("Перемещение"),
+    DRAW("Рисование")
+}
 
 class PaintViewController {
 
@@ -24,128 +36,151 @@ class PaintViewController {
     private lateinit var canvas: Pane
 
     @FXML
-    private lateinit var shapes: HBox
+    private lateinit var buttons: HBox
 
     private fun getColor() = colorPicker.value
-    private fun getWeightLine():Double {
+    private fun getWeightLine(): Double {
         return try {
             brushSize.text.toDouble()
-        } catch (e:Exception){
+        } catch (e: Exception) {
             println("Ошибка!! ${e.message}")
             ConfigApp.DEFAULT_WEIGHT
         }
 
     }
 
-    //-------------
-    private var figure: IFigure = ConfigApp.figureCreate(PaintButtonType.LINE)
-
-    private var isDrawing = false
-
-    private var currentType: PaintButtonType = PaintButtonType.LINE
-
-    //===========
-
-    //----------- Новые переменные
-    ////---Разделяем по функциям
-//    //Провайдер данных - предоставляет данные и сохраняет
-//    val storageProvider = ConfigApp.getStorageProvider()
-//    //Фабрика калькуляторов - предоставляет объект-калькулятор для расчета промежуточных точек
-//    val calcFactory     = ConfigApp.getCalculatorFactory()
-//    //Художник - создает объект Shape
-//    val artist          = ConfigApp.makeArtist()
-
-    //Менеджер рисования - выводить Shape на холст и сохраняет в хранилище
-    private lateinit var managerDrawing:ManagerDrawing
-
     //============================
 
+
+    private var paintMode: PaintMode = DEFAULT_MODE
+        set(value) {
+            field = value
+            modeManager = createModeManager()
+        }
+
+    //Менеджер режима работы
+    private var modeManager: IModeManager? = null
+        set(value) {
+            modeManager?.let { it.close() }
+            field = value
+        }
+
+    private fun createModeManager(calcType: CalcType = CalcType.LINE): IModeManager =
+        when (paintMode) {
+            PaintMode.DRAW -> ConfigApp.makeDrawManager(drawer, calcType)
+            // TODO: Тут будет специальный объект для перемещения
+            PaintMode.MOVE -> ConfigApp.makeDrawManager(drawer, calcType)
+        }
+
+    private lateinit var drawer: Drawer
 
     //Нужная для javaFX функция
     fun initialize() {
 
         println("-------------- ИНИЦИАЛИЗАЦИЯ КОНТРОЛЛЕРА -------------")
-        //Инициализируем
-        managerDrawing = ConfigApp.makeManager(canvas, CalcType.CIRCLE)
+        //создаем Рисователя
+        drawer = ConfigApp.makeDrawer(canvas)
 
-        println("$managerDrawing")
+        // TODO: Как-то некрасиво, рассмотреть возможность убрать canvas из параметров
+        modeManager = createModeManager()
+        println("$modeManager")
 
         //Настраиваем кнопки
-        //Берем список кнопок, создаем элементы, назначаем обработчик
-        val buttons = ConfigApp.getButtons()
-        buttons.forEach {
+        CalcType.values().forEach {
 
-            val btn = Button(it.name).apply {
-                setOnAction { a-> onButtonClick(it.type) }
+            val btn = Button(it.title).apply {
+                setOnAction { _ -> onFigureButtonClick(it) }
             }
-            shapes.children.add(btn)
+            buttons.children.add(btn)
         }
+
 
         //Настраиваем обработку мыши
         with(canvas) {
             setOnMouseMoved { onMouseMoved(it) }
             setOnMouseClicked { onMouseClick(it) }
-
-//
         }
 
     }
 
     private fun onMouseClick(e: MouseEvent) {
-        managerDrawing.onClick(e)
+        modeManager?.onClick(e)
 
     }
 
     private fun onMouseMoved(e: MouseEvent) {
-        managerDrawing.onMouseMoved(e)
+        modeManager?.let { it.onMouseMoved(e) }
     }
 
 
 //    fun createButton(name:String): Button = Button(name)
 
-    private fun onButtonClick(btnType:PaintButtonType){
-        //при нажатии на кнопку элемента запоминаем текущий тип
-        currentType = btnType
-    }
-    /*
-
-    private fun onMouseMoved(e: MouseEvent) {
-        //Перерисовываем фигуру, если в режиме рисования
-        val x:Double = if (e.x > 0 ) e.x else 0.0
-        val y:Double = if (e.y > 0 ) e.y else 0.0
-        if (isDrawing)
-            changeDrawing(x, y)
+    private fun onFigureButtonClick(calcType: CalcType) {
+        //Нажатие на кнопку рисования
+        paintMode = PaintMode.DRAW
+        modeManager = createModeManager(calcType)
     }
 
-    private fun changeDrawing(x: Double, y: Double) {
-        if (isDrawing)
-            figure.secondPoint(x, y)
+    fun onSaveClick() {
+        println("  --- SAVE DATA ---")
+        val file: File? = ConfigApp.showSaveOpenFileDialog("newFile", TypeFileDialog.SAVE)
+        if (file != null) {
+            val storage = ConfigApp.getStorageProvider()
+            val listFigures = storage.loadData()
+            val json = Gson().toJson(
+                listFigures.map { figure ->
+                    figure.toMap()
+                })
+            println("--- JSON -- ")
+            println("$json")
+            ConfigApp.saveData(file, json)
+            println("  --- finish")
+        } else {
+            println("  --- not set name file")
+        }
+
     }
 
-    //нажатие клавиши - смотрим статус
-    private fun onMouseClick(e: MouseEvent) {
-        println(" - Нажатие на клавишу мыши - (${e.x}, ${e.y})")
+    fun onLoadClick() {
+        println("  --- LOAD DATA ---")
+        val file: File? = ConfigApp.showSaveOpenFileDialog("", TypeFileDialog.OPEN)
+        if (file != null) {
+            println("--- file=$file")
+            try {
+                val json = ConfigApp.loadData(file.absolutePath)
+                println("  --- JSON = $json")
 
-        if (isDrawing)
-            finishDrawing()
-        else
-            startDrawing(e.x, e.y)
+                val data = Gson().fromJson(json, Array<JsonObject>::class.java)
+                val listFigures = data.map { obj ->
+                    val typeString = obj.get("type").asString
+
+                    if (typeString == FigureType.ELLIPSE.name) {
+                        Gson().fromJson(obj, FigEllipse::class.java)
+                    } else {
+                        Gson().fromJson(obj, FigLine::class.java)
+                    }
+                }
+
+                //Очищаем холст
+                drawer.clear()
+                //Выводим все эдементы
+                listFigures.forEach { figure -> drawer.addFigure(figure) }
+
+                println("  --- finish")
+            } catch (e: Exception) {
+                println("Ошибка: ${e.message}")
+            }
+
+        } else {
+            println("  --- no name file")
+        }
+
     }
 
-    private fun finishDrawing() {
-        println("!!! КОнец рисования фигуры ${figure.name}")
-        //завершаем рисование объекта
-        isDrawing = false
-    }
 
-    private fun startDrawing(x: Double, y: Double) {
-        println("Начало рисования фигуры ${figure.name} - ($x, $y)")
-        //если не в режиме рисования, переводим в режим рисования и создаем Shape-объект
-        isDrawing = true
-        figure = ConfigApp.figureCreate(currentType,x, y, getColor(), getWeightLine())
-        canvas.children.add(figure.shape)
-    }
+    companion object {
+        private val DEFAULT_MODE = PaintMode.MOVE
 
-     */
+    }
 
 }

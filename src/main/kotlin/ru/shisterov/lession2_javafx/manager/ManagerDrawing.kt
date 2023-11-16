@@ -1,48 +1,34 @@
-package ru.shisterov.lession2_javafx
+package ru.shisterov.lession2_javafx.manager
 
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
-import javafx.scene.layout.Pane
 import javafx.scene.shape.Shape
-import ru.shisterov.lession2_javafx.data.IStorageProvider
-import ru.shisterov.lession2_javafx.drawing.Artist
+import ru.shisterov.lession2_javafx.drawing.Drawer
 import ru.shisterov.lession2_javafx.drawing.FigureCalculator
-import ru.shisterov.lession2_javafx.model.Figure
 import ru.shisterov.lession2_javafx.model.MyPoint
 
 class ManagerDrawing(
     val calculator: FigureCalculator,
-    val artist: Artist,
-    val canvas: Pane,
-    val storage: IStorageProvider
-) {
+    val drawer: Drawer
+) : IModeManager {
 
-    data class DataDrawing(var shape: Shape?){
-        var isDrawing: Boolean = false
-            get() = (shape!= null)
-        fun clear(){
+    private data class DataDrawing(var shape: Shape?) {
+        val isDrawing: Boolean
+            get() = (shape != null)
+
+        fun clear() {
             this.shape = null
-                    }
+        }
     }
 
     private val data = DataDrawing(null)
 
 
-//    private var isDrawing: Boolean = false
-
-    // TODO: Вопрос с Shape по умолчанию, возможно в параметрах нужно задавать
-//    private var shape: Shape = artist.default()
-//        set(value) {
-//            field = value
-//            //- выводим shape на холст
-//            canvas.childrenUnmodifiable.add(field)
-//        }
-
     override fun toString(): String {
-        return "Менеджер рисования(холст: $canvas, калькулятор: $calculator, художник: $artist, хранилище: $storage)"
+        return "Менеджер рисования( калькулятор: $calculator, рисователь: $drawer)"
     }
 
-    fun onClick(e: MouseEvent) {
+    override fun onClick(e: MouseEvent) {
         val point = MyPoint(e.x, e.y)
         val isDrawing = data.isDrawing
         when {
@@ -53,10 +39,12 @@ class ManagerDrawing(
 
                 //- Передаем калькулятору координаты
                 val figure = calculator.start(point)
-                //- Получаем от художника Shape
-                data.shape = artist.draw(figure)
-                //- выводим shape на холст
-                canvas.children.add(data.shape)
+                //помещаем фигуру
+                data.shape = drawer.createShape(figure)
+//                //- Получаем от художника Shape
+//                data.shape = artist.draw(figure)
+//                //- выводим shape на холст
+//                canvas.children.add(data.shape)
             }
 
             (e.button == MouseButton.PRIMARY && isDrawing) -> {
@@ -74,7 +62,9 @@ class ManagerDrawing(
 
             (e.button == MouseButton.SECONDARY && isDrawing) -> {
                 //Нажали на правую кнопку в режиме рисования
+
                 // !! отменяем рисование
+                if (data.shape != null) drawer.deleteShape(data.shape!!)
             }
 
             (e.button == MouseButton.PRIMARY && !isDrawing) -> {
@@ -88,19 +78,32 @@ class ManagerDrawing(
         println("* Завершение рисования ${calculator.calcType}")
         //Завершение рисования:
         // - сохраняем объект в БД
-        storage.saveFigure(calculator.figure)
+//        storage.saveFigure(calculator.figure)
+        drawer.addFigure(calculator.figure, data.shape)
+
         //- очищаем data
         data.clear()
     }
 
-    fun onMouseMoved(e: MouseEvent) {
-        if (data.isDrawing){
+    override fun onMouseMoved(e: MouseEvent) {
+        if (data.isDrawing) {
             //Если в режиме рисования, то пересчитываем
             val point = MyPoint(e.x, e.y)
             // TODO: Изменяем последнюю точку
 
             val fig = calculator.changeLastPoint(point)
-            artist.refresh(data.shape!!, fig)
+            drawer.refresh(fig, data.shape!!)
+        }
+
+    }
+
+    override fun close() {
+        //Отмена действия, если есть
+        //Удаляем элемент с холста
+//        canvas.children.remove(data.shape)
+        if (data.shape != null) {
+            drawer.deleteShape(data.shape!!)
+            data.clear()
         }
 
     }

@@ -11,7 +11,7 @@ class PaintApplication : Application() {
         val scene = Scene(fxmlLoader.load(), ConfigApp.SCREEN_WIDTH, ConfigApp.SCREEN_HEIGHT)
 
         with(stage) {
-            title = "Hello!"
+            title = "Paint. Kotlin Lessions"
             stage.scene = scene
             show()
         }
