@@ -5,6 +5,11 @@ import javafx.scene.shape.Shape
 import ru.shisterov.lession2_javafx.data.IStorageProvider
 import ru.shisterov.lession2_javafx.model.Figure
 
+
+/*Единый объект для работы холстом:
+- при добавлении фигуры создает объект на холсте и запоминает в БД фигуру
+
+ */
 class Drawer (val storage:IStorageProvider, val canvas: Pane){
 
     val artist = Artist()
