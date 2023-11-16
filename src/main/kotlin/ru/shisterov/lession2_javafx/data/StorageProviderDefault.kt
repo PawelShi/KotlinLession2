@@ -11,5 +11,9 @@ class StorageProviderDefault :IStorageProvider {
         dataStorage.add(figure)
     }
 
+    override fun clear() {
+        dataStorage.clear()
+    }
+
     override fun toString(): String = "Память"
 }

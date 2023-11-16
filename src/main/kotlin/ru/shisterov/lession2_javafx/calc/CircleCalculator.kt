@@ -1,14 +1,14 @@
-package ru.shisterov.lession2_javafx.drawing
+package ru.shisterov.lession2_javafx.calc
 
 import javafx.geometry.Point2D
 import ru.shisterov.lession2_javafx.model.FigEllipse
 import ru.shisterov.lession2_javafx.model.Figure
 import ru.shisterov.lession2_javafx.model.MyPoint
 
-class CircleCalculator : FigureCalculator{
+class CircleCalculator : ICalculator {
 
     private val points = mutableListOf(MyPoint(0.0,0.0), MyPoint(0.0,0.0))
-    companion object {
+    private companion object {
         private const val MAX_POINT = 2
         private const val CENTER_INDEX = 0
         private const val RADIUS_INDEX = 1
@@ -21,9 +21,7 @@ class CircleCalculator : FigureCalculator{
     }
 
     override fun changeLastPoint(lastPoint: MyPoint): Figure {
-//        println("   -- changeLastPoint($lastPoint)")
         points[RADIUS_INDEX] = lastPoint
-//        println("   -- points^ $points")
         return figure
     }
 
@@ -31,7 +29,6 @@ class CircleCalculator : FigureCalculator{
     override fun setNewPoint(newPoint: MyPoint): Figure = figure
 
     override fun start(myPoint: MyPoint): Figure {
-//        println("CIRCLE start $myPoint")
         points[CENTER_INDEX] = myPoint
         points[RADIUS_INDEX] = myPoint
 
@@ -42,6 +39,7 @@ class CircleCalculator : FigureCalculator{
 
     override val figure: Figure
         get() = FigEllipse(null, getCenter(), getRadius(), getRadius())
+
     override val calcType: CalcType = CalcType.CIRCLE
 
     override fun toString(): String = "Вычислитель окружности"

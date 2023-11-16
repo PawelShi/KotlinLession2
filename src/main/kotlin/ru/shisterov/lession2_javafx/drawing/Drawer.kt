@@ -38,6 +38,7 @@ class Drawer (val storage:IStorageProvider, val canvas: Pane){
     }
 
     fun clear() {
+        storage.clear()
         canvas.children.clear()
     }
 }

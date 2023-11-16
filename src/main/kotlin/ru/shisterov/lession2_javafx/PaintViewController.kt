@@ -9,7 +9,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
-import ru.shisterov.lession2_javafx.drawing.CalcType
+import ru.shisterov.lession2_javafx.calc.CalcType
 import ru.shisterov.lession2_javafx.drawing.Drawer
 import ru.shisterov.lession2_javafx.manager.IModeManager
 import ru.shisterov.lession2_javafx.model.FigEllipse
@@ -68,7 +68,7 @@ class PaintViewController {
     private fun createModeManager(calcType: CalcType = CalcType.LINE): IModeManager =
         when (paintMode) {
             PaintMode.DRAW -> ConfigApp.makeDrawManager(drawer, calcType)
-            // TODO: Тут будет специальный объект для перемещения
+            // TODO: Тут будет специальный объект для управления перемещением
             PaintMode.MOVE -> ConfigApp.makeDrawManager(drawer, calcType)
         }
 
@@ -112,9 +112,6 @@ class PaintViewController {
         modeManager?.let { it.onMouseMoved(e) }
     }
 
-
-//    fun createButton(name:String): Button = Button(name)
-
     private fun onFigureButtonClick(calcType: CalcType) {
         //Нажатие на кнопку рисования
         paintMode = PaintMode.DRAW
@@ -129,7 +126,7 @@ class PaintViewController {
             val listFigures = storage.loadData()
             val json = Gson().toJson(
                 listFigures.map { figure ->
-                    figure.toMap()
+                    figure.toJson()
                 })
             println("--- JSON -- ")
             println("$json")
@@ -178,7 +175,7 @@ class PaintViewController {
     }
 
 
-    companion object {
+    private companion object {
         private val DEFAULT_MODE = PaintMode.MOVE
 
     }

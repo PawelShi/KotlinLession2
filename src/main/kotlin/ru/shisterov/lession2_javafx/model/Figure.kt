@@ -7,8 +7,8 @@ enum class FigureType {
 
 //Базовый класс данных
 //Содержит ID и Parameters
-interface MyJson{
-    fun toMap():MutableMap<String, Any?>
+interface ToJson{
+    fun toJson():MutableMap<String, Any?>
 
 }
 abstract class Figure(
@@ -16,9 +16,9 @@ abstract class Figure(
     val isClosed: Boolean = false,
     // TODO: Реализовать
     val parameters: Map<String, Any> = mapOf()
-) : MyJson{
+) : ToJson{
     abstract val type: FigureType
-    override fun toMap(): MutableMap<String, Any?> {
+    override fun toJson(): MutableMap<String, Any?> {
         println("-- toMap Figure")
         return mutableMapOf(
             "id" to id,
@@ -27,11 +27,11 @@ abstract class Figure(
     }
 }
 
-data class MyPoint(val x: Double, val y: Double) : MyJson{
+data class MyPoint(val x: Double, val y: Double) : ToJson{
     val values: List<Double>
         get() = listOf(x, y)
 
-    override fun toMap(): MutableMap<String, Any?> {
+    override fun toJson(): MutableMap<String, Any?> {
         return mutableMapOf(
             "x" to x,
             "y" to y,
@@ -51,11 +51,11 @@ class FigEllipse(
     override val type = FigureType.ELLIPSE
 
     //        get() = FigureType.ELLIPSE
-    override fun toMap(): MutableMap<String, Any?> {
-        return super.toMap().apply {
+    override fun toJson(): MutableMap<String, Any?> {
+        return super.toJson().apply {
             putAll(
                 setOf(
-                    "center" to center.toMap(),
+                    "center" to center.toJson(),
                     "radX" to radX,
                     "radY" to radY,
                 )
@@ -72,12 +72,12 @@ class FigLine(
     val points: MutableList<MyPoint> = mutableListOf(),
 ) : Figure(id, isClosed) {
     override val type = FigureType.MULTILINE
-    override fun toMap(): MutableMap<String, Any?> {
-        return super.toMap().apply {
+    override fun toJson(): MutableMap<String, Any?> {
+        return super.toJson().apply {
             putAll(
                 setOf(
                     "isClosed" to isClosed,
-                    "points" to points.map { p -> p.toMap() }
+                    "points" to points.map { p -> p.toJson() }
                 )
             )
         }

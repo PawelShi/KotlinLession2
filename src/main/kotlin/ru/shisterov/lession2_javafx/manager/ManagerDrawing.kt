@@ -4,11 +4,11 @@ import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.shape.Shape
 import ru.shisterov.lession2_javafx.drawing.Drawer
-import ru.shisterov.lession2_javafx.drawing.FigureCalculator
+import ru.shisterov.lession2_javafx.calc.ICalculator
 import ru.shisterov.lession2_javafx.model.MyPoint
 
 class ManagerDrawing(
-    val calculator: FigureCalculator,
+    val calculator: ICalculator,
     val drawer: Drawer
 ) : IModeManager {
 

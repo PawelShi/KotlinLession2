@@ -1,4 +1,4 @@
-package ru.shisterov.lession2_javafx.drawing
+package ru.shisterov.lession2_javafx.calc
 
 import ru.shisterov.lession2_javafx.model.Figure
 import ru.shisterov.lession2_javafx.model.MyPoint
@@ -7,25 +7,14 @@ enum class CalcType(val title:String) {
     LINE("Линия"),
     CIRCLE("Окружность"),
     TRIANGLE("Треугольник"),
-}
-
-//Интерфейс калькуляторов
-interface FigureCalculator {
-    //меняем последнюю точку
-    fun changeLastPoint(lastPoint: MyPoint):Figure
-    fun setNewPoint(newPoint: MyPoint):Figure
-    fun start(myPoint: MyPoint): Figure
-    fun isFinishDrawing(): Boolean
-    val figure: Figure
-    val calcType: CalcType
-
+    // TODO: можно добавить остальные
 }
 
 //Фабрика калькуляторов
 //-- возвращает объект-калькулятор для указанного типа Figure
 class CalculatorFactory {
     override fun toString(): String = "Фабрика вычислителей"
-    fun create(calcType: CalcType): FigureCalculator =
+    fun create(calcType: CalcType): ICalculator =
         when (calcType) {
             CalcType.CIRCLE -> CircleCalculator()
             CalcType.TRIANGLE -> TriangleCalculator()

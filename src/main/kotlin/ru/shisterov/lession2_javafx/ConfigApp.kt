@@ -5,8 +5,8 @@ import javafx.scene.paint.Color
 import javafx.stage.FileChooser
 import ru.shisterov.lession2_javafx.data.IStorageProvider
 import ru.shisterov.lession2_javafx.data.StorageProviderDefault
-import ru.shisterov.lession2_javafx.drawing.CalcType
-import ru.shisterov.lession2_javafx.drawing.CalculatorFactory
+import ru.shisterov.lession2_javafx.calc.CalcType
+import ru.shisterov.lession2_javafx.calc.CalculatorFactory
 import ru.shisterov.lession2_javafx.drawing.Drawer
 import ru.shisterov.lession2_javafx.manager.ManagerDrawing
 import java.io.File
