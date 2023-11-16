@@ -120,7 +120,7 @@ class PaintViewController {
 
     fun onSaveClick() {
         println("  --- SAVE DATA ---")
-        val file: File? = ConfigApp.showSaveOpenFileDialog("newFile", TypeFileDialog.SAVE)
+        val file: File? = showFileDialog("newFile", TypeFileDialog.SAVE)
         if (file != null) {
             val storage = ConfigApp.getStorageProvider()
             val listFigures = storage.loadData()
@@ -130,7 +130,7 @@ class PaintViewController {
                 })
             println("--- JSON -- ")
             println("$json")
-            ConfigApp.saveData(file, json)
+            saveDataToFile(file, json)
             println("  --- finish")
         } else {
             println("  --- not set name file")
@@ -140,11 +140,11 @@ class PaintViewController {
 
     fun onLoadClick() {
         println("  --- LOAD DATA ---")
-        val file: File? = ConfigApp.showSaveOpenFileDialog("", TypeFileDialog.OPEN)
+        val file: File? = showFileDialog("", TypeFileDialog.OPEN)
         if (file != null) {
             println("--- file=$file")
             try {
-                val json = ConfigApp.loadData(file.absolutePath)
+                val json = loadDataFromFile(file.absolutePath)
                 println("  --- JSON = $json")
 
                 val data = Gson().fromJson(json, Array<JsonObject>::class.java)
