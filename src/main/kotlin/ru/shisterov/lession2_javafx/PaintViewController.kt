@@ -61,7 +61,7 @@ class PaintViewController {
     //Менеджер режима работы
     private var modeManager: IModeManager? = null
         set(value) {
-            modeManager?.let { it.close() }
+            modeManager?.close()
             field = value
         }
 
