@@ -2,14 +2,14 @@ package ru.shisterov.lession2_javafx
 
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
-import javafx.stage.FileChooser
 import ru.shisterov.lession2_javafx.data.IStorageProvider
 import ru.shisterov.lession2_javafx.data.StorageProviderDefault
 import ru.shisterov.lession2_javafx.calc.CalcType
 import ru.shisterov.lession2_javafx.calc.CalculatorFactory
 import ru.shisterov.lession2_javafx.drawing.Drawer
+import ru.shisterov.lession2_javafx.drawing.MorphDrawer
+import ru.shisterov.lession2_javafx.drawing.PaintDrawer
 import ru.shisterov.lession2_javafx.manager.ManagerDrawing
-import java.io.File
 
 //Здесь будем брать параметры объектов
 
@@ -51,9 +51,13 @@ object ConfigApp {
         )
     }
 
-    fun makeDrawer(canvas: Pane): Drawer =
-        Drawer(
+    fun makePaintDrawer(canvas: Pane): Drawer =
+        PaintDrawer(
             storage = storage,
+            canvas = canvas
+        )
+    fun makeMorphDrawer(canvas: Pane): Drawer =
+        MorphDrawer(
             canvas = canvas
         )
 

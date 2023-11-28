@@ -50,7 +50,6 @@ class FigEllipse(
 ) : Figure(id) {
     override val type = FigureType.ELLIPSE
 
-    //        get() = FigureType.ELLIPSE
     override fun toJson(): MutableMap<String, Any?> {
         return super.toJson().apply {
             putAll(
@@ -69,7 +68,7 @@ class FigEllipse(
 class FigLine(
     id: Int?,
     isClosed: Boolean = false,
-    val points: MutableList<MyPoint> = mutableListOf(),
+    val points: List<MyPoint> = mutableListOf(),
 ) : Figure(id, isClosed) {
     override val type = FigureType.MULTILINE
     override fun toJson(): MutableMap<String, Any?> {

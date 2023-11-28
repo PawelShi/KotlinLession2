@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.shisterov.lession2_javafx.features.morph.MorphViewController">
+
+    <top>
+
+        <VBox>
+            <ToolBar fx:id="figureToolbar">
+<!--                <HBox fx:id="figureButtons"/>-->
+
+            </ToolBar>
+            <ToolBar fx:id="morphToolbar">
+<!--                <items>-->
+<!--                    <Text text="Преобразование:"/>-->
+<!--                    <Separator orientation="HORIZONTAL"/>-->
+<!--                    <ComboBox fx:id="numPoints" items=[10;20;50]/>-->
+<!--                    <Slider fx:id="morphSlider" nodeOrientation="LEFT_TO_RIGHT" prefHeight="14.0" prefWidth="200.0"-->
+<!--                            showTickLabels="false" showTickMarks="false"  snapToTicks="true"-->
+<!--                    majorTickUnit="25"/>-->
+<!--                    <TextField fx:id="morphValue" prefWidth="50"/>-->
+<!--                </items>-->
+
+            </ToolBar>
+
+        </VBox>
+
+    </top>
+
+    <center>
+
+        <Pane fx:id="canvas"/>
+
+    </center>
+
+    <bottom>
+        <HBox>
+            <Label text="Сообщение: "/>
+            <Text fx:id="message"/>
+        </HBox>
+    </bottom>
+</BorderPane>

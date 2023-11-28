@@ -1,4 +1,4 @@
-package ru.shisterov.lession2_javafx
+package ru.shisterov.lession2_javafx.features.paint
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -9,6 +9,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
+import ru.shisterov.lession2_javafx.*
 import ru.shisterov.lession2_javafx.calc.CalcType
 import ru.shisterov.lession2_javafx.drawing.Drawer
 import ru.shisterov.lession2_javafx.manager.IModeManager
@@ -49,9 +50,6 @@ class PaintViewController {
 
     }
 
-    //============================
-
-
     private var paintMode: PaintMode = DEFAULT_MODE
         set(value) {
             field = value
@@ -79,7 +77,7 @@ class PaintViewController {
 
         println("-------------- ИНИЦИАЛИЗАЦИЯ КОНТРОЛЛЕРА -------------")
         //создаем Рисователя
-        drawer = ConfigApp.makeDrawer(canvas)
+        drawer = ConfigApp.makePaintDrawer(canvas)
 
         // TODO: Как-то некрасиво, рассмотреть возможность убрать canvas из параметров
         modeManager = createModeManager()
@@ -176,7 +174,7 @@ class PaintViewController {
 
 
     private companion object {
-        private val DEFAULT_MODE = PaintMode.MOVE
+        val DEFAULT_MODE = PaintMode.MOVE
 
     }
 

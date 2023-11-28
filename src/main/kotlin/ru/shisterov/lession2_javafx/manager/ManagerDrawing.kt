@@ -3,14 +3,15 @@ package ru.shisterov.lession2_javafx.manager
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.shape.Shape
-import ru.shisterov.lession2_javafx.drawing.Drawer
 import ru.shisterov.lession2_javafx.calc.ICalculator
+import ru.shisterov.lession2_javafx.drawing.Drawer
 import ru.shisterov.lession2_javafx.model.MyPoint
 
 class ManagerDrawing(
     val calculator: ICalculator,
     val drawer: Drawer
 ) : IModeManager {
+
 
     private data class DataDrawing(var shape: Shape?) {
         val isDrawing: Boolean
@@ -23,10 +24,12 @@ class ManagerDrawing(
 
     private val data = DataDrawing(null)
 
+    override fun getCurrentDrawer(): Drawer = drawer
 
     override fun toString(): String {
         return "Менеджер рисования( калькулятор: $calculator, рисователь: $drawer)"
     }
+
 
     override fun onClick(e: MouseEvent) {
         val point = MyPoint(e.x, e.y)
@@ -41,10 +44,6 @@ class ManagerDrawing(
                 val figure = calculator.start(point)
                 //помещаем фигуру
                 data.shape = drawer.createShape(figure)
-//                //- Получаем от художника Shape
-//                data.shape = artist.draw(figure)
-//                //- выводим shape на холст
-//                canvas.children.add(data.shape)
             }
 
             (e.button == MouseButton.PRIMARY && isDrawing) -> {
@@ -62,7 +61,6 @@ class ManagerDrawing(
 
             (e.button == MouseButton.SECONDARY && isDrawing) -> {
                 //Нажали на правую кнопку в режиме рисования
-
                 // !! отменяем рисование
                 if (data.shape != null) drawer.deleteShape(data.shape!!)
             }
@@ -74,15 +72,21 @@ class ManagerDrawing(
         }
     }
 
+    private var onFinish: FinishFunc ={}
+    override fun setOnFinish(callback: FinishFunc){
+        this.onFinish = callback
+    }
+
     private fun finishDrawing() {
         println("* Завершение рисования ${calculator.calcType}")
         //Завершение рисования:
-        // - сохраняем объект в БД
-//        storage.saveFigure(calculator.figure)
         drawer.addFigure(calculator.figure, data.shape)
-
+        //Вызываем callback
+        onFinish(data.shape)
         //- очищаем data
         data.clear()
+
+
     }
 
     override fun onMouseMoved(e: MouseEvent) {
@@ -105,6 +109,6 @@ class ManagerDrawing(
             drawer.deleteShape(data.shape!!)
             data.clear()
         }
-
     }
 }
+

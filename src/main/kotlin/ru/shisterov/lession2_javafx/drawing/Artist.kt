@@ -1,5 +1,6 @@
 package ru.shisterov.lession2_javafx.drawing
 
+import javafx.scene.paint.Color
 import javafx.scene.shape.Ellipse
 import javafx.scene.shape.Polygon
 import javafx.scene.shape.Polyline
@@ -27,6 +28,9 @@ class Artist {
         return when (figLine.isClosed) {
             true -> Polygon().apply { points.addAll(coords) }
             else -> Polyline().apply { points.addAll(coords) }
+        }.apply {
+            fill = null
+            stroke = Color.BLACK
         }
     }
 
@@ -36,6 +40,9 @@ class Artist {
     private fun createEllipse(ellipse: FigEllipse): Shape =
         with(ellipse) {
             Ellipse(center.x, center.y, radX, radY)
+        }.apply {
+            fill = null
+            stroke = Color.BLACK
         }
 
     fun refresh(shape: Shape, figure: Figure) {
