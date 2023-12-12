@@ -8,6 +8,7 @@ enum class CalcType(val title:String) {
     CIRCLE("Окружность"),
     TRIANGLE("Треугольник"),
     // TODO: можно добавить остальные
+    RECTANGLE("Прям.")
 }
 
 //Фабрика калькуляторов
@@ -18,6 +19,7 @@ class CalculatorFactory {
         when (calcType) {
             CalcType.CIRCLE -> CircleCalculator()
             CalcType.TRIANGLE -> TriangleCalculator()
+            CalcType.RECTANGLE -> RectangleCalculator()
             else -> LineCalculator()
         }
 

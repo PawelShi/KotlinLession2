@@ -33,14 +33,15 @@
                             <MenuItem fx:id="menuDelete" visible="false" mnemonicParsing="false" text="Удалить" />
                         </items>
                     </Menu>
+                    <Menu text="Фишки">
+                    <items>
+                        <MenuItem fx:id="menuGoToMorph" mnemonicParsing="false" text="Морфинг" onAction="#onGoToMorph"/>
+                    </items>
+                    </Menu>
                 </menus>
             </MenuBar>
             <ToolBar>
                 <HBox fx:id="buttons">
-<!--                    <Button fx:id="lineBtn" text="Линия"/>-->
-<!--                    <Button fx:id="circleBtn" text="Эллипс"/>-->
-<!--                    <Button fx:id="rectBtn" text="Прямоугольник"/>-->
-<!--                    <Button fx:id="triBtn" text="Треугольник"/>-->
                 </HBox>
             </ToolBar>
             <ToolBar>

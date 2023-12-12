@@ -12,6 +12,7 @@ class MorphDrawer(val canvas: Pane) : Drawer {
     override fun addFigure(figure: Figure, existShape: Shape?) {
 
         val shape = existShape ?: artist.draw(figure)
+
         //Выводим на холст, еслои ранее не было
         if (existShape == null) canvas.children.add(shape)
     }

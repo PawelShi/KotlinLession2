@@ -7,26 +7,34 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ru.shisterov.lession2_javafx.features.morph.MorphViewController">
 
     <top>
 
         <VBox>
+            <MenuBar>
+                <menus>
+                    <Menu fx:id="menuGoToPaint" mnemonicParsing="false" text="на Рисование"/>
+                </menus>
+            </MenuBar>
             <ToolBar fx:id="figureToolbar">
-<!--                <HBox fx:id="figureButtons"/>-->
+                <!--                <HBox fx:id="figureButtons"/>-->
 
             </ToolBar>
             <ToolBar fx:id="morphToolbar">
-<!--                <items>-->
-<!--                    <Text text="Преобразование:"/>-->
-<!--                    <Separator orientation="HORIZONTAL"/>-->
-<!--                    <ComboBox fx:id="numPoints" items=[10;20;50]/>-->
-<!--                    <Slider fx:id="morphSlider" nodeOrientation="LEFT_TO_RIGHT" prefHeight="14.0" prefWidth="200.0"-->
-<!--                            showTickLabels="false" showTickMarks="false"  snapToTicks="true"-->
-<!--                    majorTickUnit="25"/>-->
-<!--                    <TextField fx:id="morphValue" prefWidth="50"/>-->
-<!--                </items>-->
+                <!--                <items>-->
+                <!--                    <Text text="Преобразование:"/>-->
+                <!--                    <Separator orientation="HORIZONTAL"/>-->
+                <!--                    <ComboBox fx:id="numPoints" items=[10;20;50]/>-->
+                <!--                    <Slider fx:id="morphSlider" nodeOrientation="LEFT_TO_RIGHT" prefHeight="14.0" prefWidth="200.0"-->
+                <!--                            showTickLabels="false" showTickMarks="false"  snapToTicks="true"-->
+                <!--                    majorTickUnit="25"/>-->
+                <!--                    <TextField fx:id="morphValue" prefWidth="50"/>-->
+                <!--                </items>-->
 
             </ToolBar>
 

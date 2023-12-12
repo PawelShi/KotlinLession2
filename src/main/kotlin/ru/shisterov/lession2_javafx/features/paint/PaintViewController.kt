@@ -2,6 +2,7 @@ package ru.shisterov.lession2_javafx.features.paint
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ColorPicker
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
+import javafx.stage.Modality
 import ru.shisterov.lession2_javafx.*
 import ru.shisterov.lession2_javafx.calc.CalcType
 import ru.shisterov.lession2_javafx.drawing.Drawer
@@ -79,7 +81,6 @@ class PaintViewController {
         //создаем Рисователя
         drawer = ConfigApp.makePaintDrawer(canvas)
 
-        // TODO: Как-то некрасиво, рассмотреть возможность убрать canvas из параметров
         modeManager = createModeManager()
         println("$modeManager")
 
@@ -107,7 +108,7 @@ class PaintViewController {
     }
 
     private fun onMouseMoved(e: MouseEvent) {
-        modeManager?.let { it.onMouseMoved(e) }
+        modeManager?.onMouseMoved(e)
     }
 
     private fun onFigureButtonClick(calcType: CalcType) {
@@ -127,7 +128,7 @@ class PaintViewController {
                     figure.toJson()
                 })
             println("--- JSON -- ")
-            println("$json")
+            println(json)
             saveDataToFile(file, json)
             println("  --- finish")
         } else {
@@ -169,6 +170,15 @@ class PaintViewController {
         } else {
             println("  --- no name file")
         }
+
+    }
+
+    fun onGoToMorph() {
+        println("onGoToMorph")
+        ConfigApp.navigator.showWindow(
+            route = NavigatorRoute.MORPH,
+            windowMode = Modality.WINDOW_MODAL,
+        )
 
     }
 

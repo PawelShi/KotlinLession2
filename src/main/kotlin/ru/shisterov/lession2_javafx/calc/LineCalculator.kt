@@ -7,9 +7,7 @@ import ru.shisterov.lession2_javafx.model.MyPoint
 class LineCalculator : ICalculator {
 
     private val points = mutableListOf<MyPoint>()
-    private companion object {
-        val MAX_POINT = 2
-    }
+
     override fun changeLastPoint(lastPoint: MyPoint): Figure {
         points[points.lastIndex] = lastPoint
         return figure
@@ -38,4 +36,8 @@ class LineCalculator : ICalculator {
 
     override fun toString(): String = "Линейный вычислитель"
     override val calcType: CalcType = CalcType.LINE
+
+    private companion object {
+        const val MAX_POINT = 2
+    }
 }

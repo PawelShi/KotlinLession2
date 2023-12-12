@@ -7,33 +7,37 @@ import javafx.stage.Stage
 
 class PaintApplication : Application() {
     override fun start(stage: Stage) {
+        ConfigApp.navigator.showWindow(
+            stage = stage,
+            route = ConfigApp.FIRST_ROUTE
+        )
 //        startPaintWindow(stage)
-        startMorphWindow(stage)
-        stage.show()
+////        startMorphWindow(stage)
+//        stage.show()
     }
 
-    fun startPaintWindow(stage: Stage){
-        val fxmlLoader = FXMLLoader(PaintApplication::class.java.getResource("paint-view.fxml"))
-        val scene = Scene(fxmlLoader.load(), ConfigApp.SCREEN_WIDTH, ConfigApp.SCREEN_HEIGHT)
-
-        with(stage) {
-            title = "Kotlin Lessions. Рисование"
-            stage.scene = scene
-            show()
-        }
-    }
-
-    fun startMorphWindow(stage: Stage){
-        val fxmlLoader = FXMLLoader(PaintApplication::class.java.getResource("morph-view.fxml"))
-        val scene = Scene(fxmlLoader.load(), ConfigApp.SCREEN_WIDTH, ConfigApp.SCREEN_HEIGHT)
-
-        with(stage) {
-            title = "Kotlin Lessions. Преобразование"
-            stage.scene = scene
-            show()
-        }
-
-    }
+//    fun startPaintWindow(stage: Stage){
+//        val fxmlLoader = FXMLLoader(PaintApplication::class.java.getResource("paint-view.fxml"))
+//        val scene = Scene(fxmlLoader.load(), ConfigApp.SCREEN_WIDTH, ConfigApp.SCREEN_HEIGHT)
+//
+//        with(stage) {
+//            title = "Kotlin Lessions. Рисование"
+//            stage.scene = scene
+//            show()
+//        }
+//    }
+//
+//    fun startMorphWindow(stage: Stage){
+//        val fxmlLoader = FXMLLoader(PaintApplication::class.java.getResource("morph-view.fxml"))
+//        val scene = Scene(fxmlLoader.load(), ConfigApp.SCREEN_WIDTH, ConfigApp.SCREEN_HEIGHT)
+//
+//        with(stage) {
+//            title = "Kotlin Lessions. Преобразование"
+//            stage.scene = scene
+//            show()
+//        }
+//
+//    }
 
 }
 

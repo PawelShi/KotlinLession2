@@ -70,7 +70,9 @@ class FigLine(
     isClosed: Boolean = false,
     val points: List<MyPoint> = mutableListOf(),
 ) : Figure(id, isClosed) {
+
     override val type = FigureType.MULTILINE
+
     override fun toJson(): MutableMap<String, Any?> {
         return super.toJson().apply {
             putAll(
